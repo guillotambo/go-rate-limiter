@@ -49,7 +49,7 @@ func newRateLimiterWithClock(maxRequestAllowedPerUser int, timeFrameInSeconds in
 
 func (rateLimiter *RateLimiter) Accept(ctx *gin.Context) {
 	userId := ctx.GetHeader("userId")
-	if userId != "" {
+	if userId == "" {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, "user Id is not valid")
 		return
 	}
