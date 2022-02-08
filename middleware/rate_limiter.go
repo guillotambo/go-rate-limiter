@@ -61,7 +61,7 @@ func (rateLimiter *RateLimiter) Accept(ctx *gin.Context) {
 
 	userTimestamps := rateLimiter.timestampsByUser[userId]
 
-	rateLimiter.cleanOldRequests(*userTimestamps, currentTimestamp)
+	rateLimiter.cleanOldRequests(userTimestamps, currentTimestamp)
 
 	if !(userTimestamps.Len() < rateLimiter.maxRequestAllowedPerUser) {
 		ctx.AbortWithStatusJSON(http.StatusTooManyRequests, "Try again later ;(")
@@ -73,15 +73,15 @@ func (rateLimiter *RateLimiter) Accept(ctx *gin.Context) {
 	ctx.Next()
 }
 
-func (rateLimiter *RateLimiter) cleanOldRequests(userTimestamps list.List, now int64) {
+func (rateLimiter *RateLimiter) cleanOldRequests(userTimestamps *list.List, now int64) {
 	element := userTimestamps.Front()
 	oldestPossibleTime := now - rateLimiter.timeFrameInNano
 	for i := 0; i < userTimestamps.Len(); i++ {
 		value := element.Value.(int64)
+		next := element.Next()
 		if value <= oldestPossibleTime {
 			userTimestamps.Remove(element)
-		} else {
-			element = element.Next()
 		}
+		element = next
 	}
 }
