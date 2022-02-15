@@ -1,23 +1,20 @@
-# Lemon Challenge
+# Golang Rate Limiter
 
-El objetivo de este challenge es montar un server que exponga un endpoint `GET /message` a partir del cual se devuelva un mensaje del servicio de [Fuck Off as a Service](https://www.foaas.com/). El mensaje a obtener de este servicio esta totalmente a eleccion del candidato. 
+Se monta un server que expone un endpoint `GET /message` a partir del cual se devuelva un mensaje del servicio de [Fuck Off as a Service](https://www.foaas.com/).
 
-La unica restriccion es que un usuario que consuma este endpoint pueda utilizarlo HASTA 5 veces dentro de un periodo de 10 segundos. 
+Un usuario puede consumir este endpoint X cantidad de veces dentro de un periodo de cantidad T de segundos.
 
-No es necesario modelar ningun tipo de usuario, se puede utilizar el metodo de autenticacion que la persona mejor considere. Ninguna parte de la autenticacion sera tomada en cuenta para la evaluacion del ejercicio asi que se puede implementar algo tan simple como un header con un userId inventado.
-
-## Casos de Uso a evaluar
+## Casos de Uso - Ejemplos:
 
 - Se consume una vez la API con un userId determinado y devuelve el mensaje del servicio
 - Se consume la API 5 veces dentro de un periodo de 10 segundos y esta devuelve los 5 mensajes del servicio
 - Se consume la API 6 veces dentro de un periodo de 10 segundos y el sexto llamado devuelve un error.
-- Se consume la API 6 veces dentro de un periodo de 10 segundos, se hace un septimo llamado 10 segundos despues del primer llamado y este devuelve un mensaje del servicio
-
+- Se consume la API 6 veces dentro de un periodo de 10 segundos, se hace un septimo llamado 10 segundos despues del primer llamado y este devuelve un mensaje del servicio.  
 
 # Desarrollo
 Desarrollado en Golang. 
 
-Para el ejercicio, implementé un Rate Limiter como middleware, el cual fue usado para el endpoint especificado, aunque puede ser reutilizado para cualquier endpoint.  
+Rate Limiter como middleware, el cual fue usado para el endpoint especificado, pero la idea es que pueda ser reutilizado para cualquier endpoint.  
 
 ## Solución
 Se mantiene una colección de los timestamps de cada request por cada usuario.  
@@ -48,6 +45,7 @@ Se realizaron test unitarios para el rate limiter.
 
 ## Requisitos
 - SDK de Go 
+- Se puede levantar con docker
 
 Ejecutar
 - `go build - go run`
